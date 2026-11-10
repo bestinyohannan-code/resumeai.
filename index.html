@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ResumeAI - Fresher Resume & Cover Letter in 1 Minute</title>
+<style>
+  :root { --bg:#f6f7fb; --card:#fff; --ink:#1b1f2a; --muted:#5d6577; --brand:#2f5bea; --brand-dark:#2447c0; --line:#e3e6ef; --ok:#16a34a; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
+  header { padding:28px 16px 8px; text-align:center; }
+  header h1 { margin:0 0 6px; font-size:1.8rem; }
+  header p { margin:0; color:var(--muted); }
+  main { max-width:1080px; margin:0 auto; padding:16px; display:grid; gap:20px; grid-template-columns:1fr; }
+  @media (min-width:900px){ main { grid-template-columns: 1fr 1fr; align-items:start; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; }
+  label { display:block; font-weight:600; font-size:.9rem; margin:14px 0 4px; }
+  label small { font-weight:400; color:var(--muted); }
+  input, textarea { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font:inherit; background:#fff; }
+  input:focus, textarea:focus { outline:2px solid var(--brand); border-color:transparent; }
+  textarea { min-height:84px; resize:vertical; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  button { font:inherit; cursor:pointer; border:0; border-radius:10px; padding:12px 18px; font-weight:700; }
+  .primary { background:var(--brand); color:#fff; width:100%; margin-top:18px; }
+  .primary:hover { background:var(--brand-dark); }
+  .primary:disabled { opacity:.6; cursor:wait; }
+  .ghost { background:#eef1fb; color:var(--brand-dark); }
+  .pay { background:var(--ok); color:#fff; }
+  #status { margin-top:10px; font-size:.9rem; color:var(--muted); min-height:1.2em; }
+  .empty { color:var(--muted); text-align:center; padding:60px 10px; }
+  .actions { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .tabs { display:flex; gap:8px; margin-bottom:12px; }
+  .tab { background:#eef1fb; color:var(--brand-dark); padding:8px 14px; }
+  .tab.active { background:var(--brand); color:#fff; }
+  .paper { position:relative; background:#fff; border:1px solid var(--line); border-radius:8px; padding:28px; font-family: Georgia, "Times New Roman", serif; font-size:.95rem; }
+  .paper h2 { font-size:1.5rem; margin:0; font-family: system-ui, sans-serif; }
+  .paper .headline { color:#444; margin:2px 0; }
+  .paper .contact { color:#555; font-size:.85rem; margin-bottom:10px; }
+  .paper h3 { font-family: system-ui, sans-serif; font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; border-bottom:1px solid #ccc; padding-bottom:2px; margin:16px 0 6px; }
+  .paper ul { margin:4px 0 0 18px; padding:0; }
+  .paper .job { font-weight:700; margin-top:8px; }
+  .paper .when { color:#555; font-weight:400; }
+  .paper p { margin:4px 0; white-space:pre-wrap; }
+  .watermark::after { content:"PREVIEW"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font:800 5rem system-ui, sans-serif; color:rgba(47,91,234,.10); transform:rotate(-25deg); pointer-events:none; }
+  .locked-letter { filter: blur(5px); user-select:none; }
+  .lockmsg { text-align:center; margin-top:10px; font-weight:600; }
+  .notice { background:#fff7e6; border:1px solid #ffd591; border-radius:8px; padding:10px 12px; font-size:.85rem; margin-bottom:12px; }
+  footer { text-align:center; color:var(--muted); font-size:.8rem; padding:20px; }
+  .hidden { display:none !important; }
+  @media print {
+    body { background:#fff; }
+    header, #formCard, .actions, .tabs, footer, #status, .notice, .lockmsg { display:none !important; }
+    main { display:block; padding:0; }
+    #resultCard { border:0; padding:0; }
+    .paper { border:0; padding:0; }
+    .printhide { display:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ResumeAI</h1>
+  <p>Fill your details once. Get a clean resume and cover letter in a minute.</p>
+</header>
+
+<main>
+  <section class="card" id="formCard">
+    <h2 style="margin-top:0">1. Your details</h2>
+    <form id="form">
+      <div class="row">
+        <div><label for="name">Full name</label><input id="name" required placeholder="Anu Thomas"></div>
+        <div><label for="job">Job you want</label><input id="job" required placeholder="Junior Web Developer"></div>
+      </div>
+      <div class="row">
+        <div><label for="email">Email</label><input id="email" type="email" placeholder="anu@email.com"></div>
+        <div><label for="phone">Phone</label><input id="phone" placeholder="+91 98765 43210"></div>
+      </div>
+      <label for="city">City</label><input id="city" placeholder="Kochi, Kerala">
+
+      <label for="edu">Education <small>(one per line: course, college, year)</small></label>
+      <textarea id="edu" required placeholder="B.Tech Computer Science, ABC College, 2026&#10;Plus Two (Science), XYZ School, 2022"></textarea>
+
+      <label for="skills">Skills <small>(separate with commas)</small></label>
+      <input id="skills" required placeholder="Python, HTML, CSS, Excel, Communication">
+
+      <label for="exp">Projects / internships / experience <small>(write simply, one per line)</small></label>
+      <textarea id="exp" placeholder="Made a library management app in Python for college project&#10;Interned 1 month at a local shop, handled billing and customer queries"></textarea>
+
+      <label for="jd">Job description <small>(optional, paste from the job post for a better match)</small></label>
+      <textarea id="jd" placeholder="Paste the job ad here..."></textarea>
+
+      <button class="primary" id="go" type="submit">Create my resume</button>
+      <div id="status" role="status"></div>
+    </form>
+  </section>
+
+  <section class="card" id="resultCard">
+    <h2 style="margin-top:0">2. Your result</h2>
+    <div id="empty" class="empty">Your resume will appear here.</div>
+    <div id="result" class="hidden">
+      <div id="demoNotice" class="notice hidden">Basic mode: the AI server is not connected, so this resume was built with a simple template. See README.md to switch on the AI.</div>
+      <div class="actions">
+        <button class="pay" id="payBtn">Unlock & download PDF</button>
+        <button class="ghost hidden" id="printBtn">Download PDF</button>
+        <button class="ghost" id="editBtn">Edit details</button>
+      </div>
+      <div class="tabs">
+        <button class="tab active" id="tabResume" type="button">Resume</button>
+        <button class="tab" id="tabLetter" type="button">Cover letter</button>
+      </div>
+      <div id="resumePaper" class="paper watermark"></div>
+      <div id="letterPaper" class="paper hidden"></div>
+      <div class="lockmsg printhide" id="lockMsg">Pay once to remove the PREVIEW mark, read the full cover letter and download the PDF.</div>
+    </div>
+  </section>
+</main>
+
+<footer>Tip: in the print window choose "Save as PDF".</footer>
+
+<script>
+/* ====== SETTINGS - CHANGE THESE ====== */
+var PRICE_TEXT   = "₹99";                       // shown on the button
+var PAYMENT_LINK = "";                          // paste your Razorpay payment link here
+var API_URL      = "/api/generate";             // the serverless function (see README.md)
+/* ===================================== */
+
+var data = null;       // result from AI or fallback
+var isDemo = false;
+var PAID_KEY = "resumeai_paid";
+
+function isPaid() {
+  try {
+    if (new URLSearchParams(location.search).get("paid") === "1") localStorage.setItem(PAID_KEY, "1");
+    return localStorage.getItem(PAID_KEY) === "1";
+  } catch (e) { return false; }
+}
+
+function $(id) { return document.getElementById(id); }
+
+function el(tag, cls, text) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined && text !== null) e.textContent = text;
+  return e;
+}
+
+function lines(s) {
+  return String(s || "").split("\n").map(function (x) { return x.trim(); }).filter(Boolean);
+}
+
+/* Simple template used when the AI server is not connected */
+function fallbackBuild(f) {
+  var skills = f.skills.split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+  var exp = lines(f.exp).map(function (l) { return { role: l, org: "", period: "", bullets: [] }; });
+  return {
+    headline: f.job,
+    summary: "Motivated fresher looking for a " + f.job + " role. Skilled in " + skills.slice(0, 4).join(", ") +
+             ". Eager to learn quickly and contribute to the team.",
+    skills: skills,
+    experience: exp,
+    education: lines(f.edu),
+    coverLetter: "Dear Hiring Manager,\n\nI
